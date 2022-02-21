@@ -69,11 +69,19 @@
             $query = "SELECT * FROM rango_parametros";
             $result = mysqli_query($conn, $query);
             while($row = mysqli_fetch_assoc($result)) {
-              echo '<option value="' . $row['Id'] . 
-              '">Temp('.$row['Temperatura_min'].' - ' . $row['Temperatura_max'] . '), ' . 
-              'Humedad('.$row['Humedad_min'].' - ' . $row['Humedad_max'] . '), ' . 
-              'IntLuz('.$row['Intensidad_luz_min'].' - ' . $row['Intensidad_luz_max'] . '), ' . 
-              'HumAmbiente('.$row['Humedad_ambiente_min'].' - ' . $row['Humedad_ambiente_max'] . ')</option>';
+              if ($row['Id'] == $id_rango) {
+                echo '<option value="' . $row['Id'] . 
+                '" selected>Temp('.$row['Temperatura_min'].' - ' . $row['Temperatura_max'] . '), ' . 
+                'Humedad('.$row['Humedad_min'].' - ' . $row['Humedad_max'] . '), ' . 
+                'IntLuz('.$row['Intensidad_luz_min'].' - ' . $row['Intensidad_luz_max'] . '), ' . 
+                'HumAmbiente('.$row['Humedad_ambiente_min'].' - ' . $row['Humedad_ambiente_max'] . ')</option>';
+              } else {
+                echo '<option value="' . $row['Id'] . 
+                '">Temp('.$row['Temperatura_min'].' - ' . $row['Temperatura_max'] . '), ' . 
+                'Humedad('.$row['Humedad_min'].' - ' . $row['Humedad_max'] . '), ' . 
+                'IntLuz('.$row['Intensidad_luz_min'].' - ' . $row['Intensidad_luz_max'] . '), ' . 
+                'HumAmbiente('.$row['Humedad_ambiente_min'].' - ' . $row['Humedad_ambiente_max'] . ')</option>';
+              }
             }
           ?>
         </select>
