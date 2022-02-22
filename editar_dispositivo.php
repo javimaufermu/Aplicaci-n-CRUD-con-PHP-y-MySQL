@@ -1,6 +1,8 @@
 <?php include("conn_db.php"); ?>
 
-<?php include('includes/header.php'); ?>
+<?php include('includes/header.php'); 
+include "Autenticacion/SeguridadUsuario.php";
+?>
 
 <?php
   if (isset($_GET['id'])) {
@@ -16,24 +18,26 @@
       $id_rango = $row['Id_rango'];
     }
   }
-  if(isset($_POST['save_disp'])) {
+  if(isset($_POST['update_disp'])) {
     $nombre = $_POST['nombre'];
     $estado = $_POST['estado'];
     $latitud = $_POST['latitud'];
     $longitud = $_POST['longitud'];
     $id_rango = $_POST['rango'];
-    $query = "UPDATE dispositivo SET Estado='$estado', Nombre='$nombre', Latitud='$latitud', Longitud='$longitud', Id_rango='$id_rango')";
+    $id = $_GET['id'];
+    $query = "UPDATE dispositivo SET Estado='$estado', Nombre='$nombre', Latitud='$latitud', Longitud='$longitud', Id_rango='$id_rango' WHERE Id = $id";
     $result = mysqli_query($conn, $query);
     echo "dato enviado";
-    if(!$result) { die("Query Failed."); }
-    header('Location: index.php');
+    if(!$result) { //die("Query Failed."); 
+      header('Location: index.php?mensaje=2');}
+    else header('Location: index.php?mensaje=1');
   }
 ?>
 
 <main class="container" p-4>
   <div class="col-md-5 mx-auto">
     <h3>Editar Dispositivo</h3>
-    <form action="agregar_dispositivo.php?id=<?php echo $_GET['id']; ?>" method="POST">
+    <form action="editar_dispositivo.php?id=<?php echo $_GET['id']; ?>" method="POST">
       <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Nombre:</span>
         <input name="nombre" type="text" value="<?php echo $nombre ?>" class="form-control" id="validationDefault01" required>

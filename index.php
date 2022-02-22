@@ -1,6 +1,8 @@
 <?php include("conn_db.php"); ?>
 
-<?php include('includes/header.php'); ?>
+<?php include('includes/header.php'); 
+include "Autenticacion/SeguridadUsuario.php";
+?>
 
 <main class="container">
   <div class="row">
@@ -18,6 +20,7 @@
             <select name="list_disp" class="form-select" aria-label="Default select example">
               <option selected>--</option>
               <?php
+              $id_usuario=$_SESSION["id"];
               $query = "SELECT id, nombre FROM dispositivo WHERE id_usuario=$id_usuario";
               $result = mysqli_query($conn, $query);
               while($row = mysqli_fetch_assoc($result)) {
@@ -69,6 +72,33 @@
         </tbody>
       </table>
     </div>
+    <?php 
+    if (isset($_GET["mensaje"]))
+    {
+    $mensaje = $_GET["mensaje"];
+       if ($_GET["mensaje"]!=""){
+         if($mensaje % 2 ==0) $color="red";
+         else $color="blue";
+   ?>
+    
+    <div style="color:<?php echo $color;?>; padding-top: 15px; font-size: 0.9rem;">
+      <span>
+      <?php 
+      if ($mensaje == 1)
+        echo "Dispositivo actualizado";
+      if ($mensaje == 2)
+        echo "Error al actualizar el dispositivo";
+      if ($mensaje == 3)
+        echo "Dispositivo agregado";
+      if ($mensaje == 4)
+        echo "Error al agregar dispositivo";
+      ?>
+      </span>                         
+    </div>
+          <?php 
+              }
+            }
+          ?>
   </div>
 </main>
 

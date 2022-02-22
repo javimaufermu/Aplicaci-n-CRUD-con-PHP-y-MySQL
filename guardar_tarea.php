@@ -8,7 +8,7 @@ if(isset($_POST['bt_guardar_tarea'])){
     $nombre = $_POST['nombre_disp'];
     $latitud = $_POST['latitud'];
     $longitud = $_POST['longitud'];
-    $id_usuario = $_SESSION["id"];;
+    $id_usuario = $_SESSION["id"];
     $estado = "Activo";
     $id_rango = 1;    
     

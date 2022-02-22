@@ -15,6 +15,7 @@
         <a class="navbar-brand" href="rango_parametros.php">Rango de parametros</a>
         <a class="navbar-brand" href="parametros.php">Parámetros</a>
         <a class="navbar-brand" href="alertas.php">Alertas</a>
+        <a class="navbar-brand" href="Autenticacion/cerrar_sesion.php">Cerrar Sesión</a>
       </div>
     </nav>
-    <?php $id_usuario = "2"; ?>
+    

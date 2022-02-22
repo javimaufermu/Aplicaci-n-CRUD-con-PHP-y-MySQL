@@ -1,6 +1,8 @@
 <?php include("conn_db.php"); ?>
 
-<?php include('includes/header.php'); ?>
+<?php include('includes/header.php'); 
+include "Autenticacion/SeguridadUsuario.php";
+?>
 
 <?php
   if(isset($_POST['save_disp'])) {
@@ -9,11 +11,14 @@
     $latitud = $_POST['latitud'];
     $longitud = $_POST['longitud'];
     $id_rango = $_POST['rango'];
-    $query = "INSERT INTO dispositivo(Estado, Nombre, Latitud, Longitud, Id_usuario, Id_rango) VALUES ('$estado', '$nombre', '$latitud', '$longitud', '$id_usuario', '$id_rango')";
+    $id_usuario = $_SESSION["id"];
+    $query = 'INSERT INTO dispositivo(Estado, Nombre, Latitud, Longitud, Id_usuario, Id_rango) 
+    VALUES (\''.$estado.'\', \''.$nombre.'\', \''.$latitud.'\', \''.$longitud.'\', \''.$id_usuario.'\', \''.$id_rango.'\')';
     $result = mysqli_query($conn, $query);
     echo "dato enviado";
-    if(!$result) { die("Query Failed."); }
-    header('Location: index.php');
+    if(!$result) { die("Query Failed."); 
+      header('Location: index.php?mensaje=4');}
+    header('Location: index.php?mensaje=3');
   }
 ?>
 
