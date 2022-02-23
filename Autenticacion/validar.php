@@ -4,7 +4,7 @@ ob_start();
 // PROGRAMA DE VALIDACION DE USUARIOS
 $login = $_POST["login"];
 $passwd = $_POST["passwd"];
-//$passwd = md5($passwd);
+$passwd = md5($passwd);
 
 session_start();
 include ("../conn_db.php");

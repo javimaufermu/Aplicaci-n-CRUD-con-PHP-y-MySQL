@@ -4,5 +4,5 @@
     'root',
     '',
     'sistema_properseed'
-  ) or die(mysqli_erro($mysqli));
+  ) or die(mysqli_error($mysqli));
 ?>
