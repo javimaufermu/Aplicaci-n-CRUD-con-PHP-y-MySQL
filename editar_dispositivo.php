@@ -1,12 +1,9 @@
 <?php include("conn_db.php"); ?>
-
-<?php include('includes/header.php'); 
-include "Autenticacion/SeguridadUsuario.php";
-?>
+<?php include('includes/header.php'); ?>
 
 <?php
   if (isset($_GET['id'])) {
-    $id=$_GET['id'];
+    $id = $_GET['id'];
     $query = "SELECT * FROM dispositivo WHERE id='$id'";
     $result = mysqli_query($conn, $query);
     if(mysqli_num_rows($result) == 1) {
@@ -19,18 +16,22 @@ include "Autenticacion/SeguridadUsuario.php";
     }
   }
   if(isset($_POST['update_disp'])) {
+    $id = $_GET['id'];
     $nombre = $_POST['nombre'];
     $estado = $_POST['estado'];
     $latitud = $_POST['latitud'];
     $longitud = $_POST['longitud'];
     $id_rango = $_POST['rango'];
-    $id = $_GET['id'];
-    $query = "UPDATE dispositivo SET Estado='$estado', Nombre='$nombre', Latitud='$latitud', Longitud='$longitud', Id_rango='$id_rango' WHERE Id = $id";
+    $query = "UPDATE dispositivo SET Estado='$estado', Nombre='$nombre', Latitud='$latitud', Longitud='$longitud', Id_rango='$id_rango' WHERE Id='$id'";
     $result = mysqli_query($conn, $query);
-    echo "dato enviado";
-    if(!$result) { //die("Query Failed."); 
-      header('Location: index.php?mensaje=2');}
-    else header('Location: index.php?mensaje=1');
+    if(!$result) {
+      $_SESSION['mss_color'] = 'danger';
+      $_SESSION['mensaje'] = 'Error al editar dispositivo';
+    } else {
+      $_SESSION['mss_color'] = 'success';
+      $_SESSION['mensaje'] = 'Dispositivo actualizado';
+    }
+    header('Location: index.php');
   }
 ?>
 
@@ -39,12 +40,12 @@ include "Autenticacion/SeguridadUsuario.php";
     <h3>Editar Dispositivo</h3>
     <form action="editar_dispositivo.php?id=<?php echo $_GET['id']; ?>" method="POST">
       <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">Nombre:</span>
-        <input name="nombre" type="text" value="<?php echo $nombre ?>" class="form-control" id="validationDefault01" required>
+        <span class="input-group-text">Nombre:</span>
+        <input name="nombre" type="text" value="<?php echo $nombre ?>" class="form-control" required>
       </div>
       <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">Estado:</span>
-        <select name="estado" class="form-select form-select-sm" aria-label=".form-select-sm example" id="validationDefault02" required>
+        <span class="input-group-text">Estado:</span>
+        <select name="estado" class="form-select form-select-sm" aria-label=".form-select-sm example" required>
           <option selected disabled value="">Seleccione ...</option>
           <?php 
             if($estado == "Activo") {
@@ -58,16 +59,16 @@ include "Autenticacion/SeguridadUsuario.php";
         </select>
       </div>
       <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">Latitud:</span>
-        <input name="latitud" type="number" step="0.000001" value="<?php echo $latitud ?>" class="form-control" id="validationDefault03" required>
+        <span class="input-group-text">Latitud:</span>
+        <input name="latitud" type="number" step="0.000001" value="<?php echo $latitud ?>" class="form-control" required>
       </div>
       <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">Longitud:</span>
-        <input name="longitud" type="number" step="0.000001" value="<?php echo $longitud ?>" class="form-control" id="validationDefault04" required>
+        <span class="input-group-text">Longitud:</span>
+        <input name="longitud" type="number" step="0.000001" value="<?php echo $longitud ?>" class="form-control" required>
       </div>
       <div class="form-group">
         <label for="rango">Rango: </label>
-        <select name="rango" class="form-select form-select-sm" aria-label=".form-select-sm example" id="validationDefault05" required>
+        <select name="rango" class="form-select form-select-sm" aria-label=".form-select-sm example" required>
           <option selected disabled value="">Selecione ...</option>
           <?php
             $query = "SELECT * FROM rango_parametros";

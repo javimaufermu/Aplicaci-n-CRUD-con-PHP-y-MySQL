@@ -1,8 +1,6 @@
 <?php include("conn_db.php"); ?>
 
-<?php include('includes/header.php'); 
-include "Autenticacion/SeguridadUsuario.php";
-?>
+<?php include('includes/header.php'); ?>
 
 <?php
   if(isset($_POST['save_disp'])) {
@@ -11,14 +9,16 @@ include "Autenticacion/SeguridadUsuario.php";
     $latitud = $_POST['latitud'];
     $longitud = $_POST['longitud'];
     $id_rango = $_POST['rango'];
-    $id_usuario = $_SESSION["id"];
-    $query = 'INSERT INTO dispositivo(Estado, Nombre, Latitud, Longitud, Id_usuario, Id_rango) 
-    VALUES (\''.$estado.'\', \''.$nombre.'\', \''.$latitud.'\', \''.$longitud.'\', \''.$id_usuario.'\', \''.$id_rango.'\')';
+    $query = "INSERT INTO dispositivo(Estado, Nombre, Latitud, Longitud, Id_usuario, Id_rango) VALUES ('$estado', '$nombre', '$latitud', '$longitud', '$id_usuario', '$id_rango')";
     $result = mysqli_query($conn, $query);
-    echo "dato enviado";
-    if(!$result) { die("Query Failed."); 
-      header('Location: index.php?mensaje=4');}
-    header('Location: index.php?mensaje=3');
+    if(!$result) {
+      $_SESSION['mss_color'] = 'danger';
+      $_SESSION['mensaje'] = 'Error al agregar dispositivo';
+    } else {
+      $_SESSION['mss_color'] = 'success';
+      $_SESSION['mensaje'] = 'Dispositivo agregado';
+    }
+    header('Location: index.php');
   }
 ?>
 

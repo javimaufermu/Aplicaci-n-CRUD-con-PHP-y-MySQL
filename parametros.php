@@ -1,11 +1,10 @@
 <?php include("conn_db.php"); ?>
-
 <?php include('includes/header.php'); ?>
 
 <main class="container" p4>
   <div class="row">
     <div class="col-md-3">
-      <?php 
+    <?php 
       if (isset($_SESSION["mensaje"])) {
         if ($_SESSION["mensaje"] != ""){ ?>
           <div class="alert alert-<?php echo $_SESSION['mss_color'];?> alert-dismissible fade show" role="alert">
@@ -16,21 +15,22 @@
         $_SESSION['mensaje'] = "";
       } ?>
       <div class="card card-body bg-light">
-        <form action="alertas.php" method="POST">
-          <label for="list_var">Seleccionar Variable</label>
+        <form action="parametros.php" method="POST">
+          <label>Seleccionar dispositivo</label>
           <div class="form-group">
-            <select name="list_var" class="form-select" aria-label="Default select example" required>
+            <select name="list_disp" class="form-select" aria-label="Default select example" required>
               <option selected disabled value="">Selecione ...</option>
               <?php 
-                $query = "SELECT DISTINCT variable FROM dispositivo INNER JOIN alerta ON id_dispositivo=dispositivo.id WHERE id_usuario=$id_usuario";
+                $query = "SELECT DISTINCT dispositivo.id, nombre FROM dispositivo INNER JOIN parametros ON dispositivo.id=id_dispositivo WHERE id_usuario=$id_usuario";
                 $result = mysqli_query($conn, $query);
                 while($row = mysqli_fetch_assoc($result)) {
-                  echo '<option value="' . $row['variable'] . '">' . $row['variable'] . '</option>';
+                  echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
                 }
               ?>
             </select><br>
-            <select name="n_var" class="form-select" aria-label="Default select example">
+            <select name="n_par" class="form-select" aria-label="Default select example">
               <option selected value="">Todo</option>
+              <option value="50">100</option>
               <option value="50">50</option>
               <option value="20">20</option>
               <option value="10">10</option>
@@ -41,46 +41,46 @@
       </div>
     </div>
     <div class="col-md-9">
-      <table class="table table-success table-striped text-center">
-        <thead class="table-warning">
+      <table class="table table-info table-striped text-center">
+        <thead class="table-secondary">
           <tr>
             <th>Dispositivo</th>
-            <th>Variable</th>
-            <th>Tipo</th>
-            <th>Valor</th>
-            <th>Mín</th>
-            <th>Máx</th>
+            <th>Temperatura</th>
+            <th>Humedad Suelo</th>
+            <th>Humedad Ambiente</th>
+            <th>Precipitaciones</th>
+            <th>Intensidad Luz Solar</th>
             <th>Fecha</th>
             <th>Hora</th>
-            <th></th>
+            <th><i class="far fa-trash-alt"></i></th>
           </tr>
         </thead>
         <tbody>
           <?php
-          if(isset($_POST['list_var']) && isset($_POST['n_var'])) {
-            $variable = $_POST['list_var'];
-            $n_var = $_POST['n_var'];
-            if ($n_var <> "") {
-              $query = "SELECT *, alerta.id AS id_alerta FROM alerta INNER JOIN dispositivo ON id_dispositivo=dispositivo.id WHERE variable='$variable' AND id_usuario=$id_usuario LIMIT $n_var";
+          if(isset($_POST['list_disp']) && isset($_POST['n_par'])) {
+            $id = $_POST['list_disp'];
+            $n_par = $_POST['n_par'];
+            if ($n_par <> "") {
+              $query = "SELECT * FROM parametros INNER JOIN dispositivo ON id_dispositivo=dispositivo.id WHERE dispositivo.id=$id AND id_usuario=$id_usuario LIMIT $n_par";
             } else {
-              $query = "SELECT *, alerta.id AS id_alerta FROM alerta INNER JOIN dispositivo ON id_dispositivo=dispositivo.id WHERE variable='$variable' AND id_usuario=$id_usuario";
+              $query = "SELECT * FROM parametros INNER JOIN dispositivo ON id_dispositivo=dispositivo.id WHERE dispositivo.id=$id AND id_usuario=$id_usuario";
             }
           } else {
-            $query = "SELECT *, alerta.id AS id_alerta FROM alerta INNER JOIN dispositivo ON id_dispositivo=dispositivo.id WHERE id_usuario=$id_usuario";
+            $query = "SELECT * FROM parametros INNER JOIN dispositivo ON id_dispositivo=dispositivo.id WHERE id_usuario=$id_usuario";
           }
           $result = mysqli_query($conn, $query);
           while($row = mysqli_fetch_assoc($result)) { ?>
             <tr>
               <td><?php echo $row['Nombre']; ?></td>
-              <td><?php echo $row['Variable']; ?></td>
-              <td><?php echo $row['Tipo']; ?></td>
-              <td><?php echo $row['Valor']; ?></td>
-              <td><?php echo $row['Minimo']; ?></td>
-              <td><?php echo $row['Maximo']; ?></td>
+              <td><?php echo $row['Temperatura']; ?></td>
+              <td><?php echo $row['Humedad_suelo']; ?></td>
+              <td><?php echo $row['Humedad_ambiente']; ?></td>
+              <td><?php echo $row['Precipitaciones']; ?></td>
+              <td><?php echo $row['Intensidad_luz_solar']; ?></td>
               <td><?php echo $row['Fecha']; ?></td>
               <td><?php echo $row['Hora']; ?></td>
               <td>
-                <a href="eliminar.php?id=<?php echo $row['id_alerta']?>&tabla=alerta" class="btn btn-danger">
+                <a href="eliminar.php?id=<?php echo $row['Id']?>&tabla=parametros" class="btn btn-danger">
                   <i class="bi bi-trash3"></i>
                 </a>
               </td>

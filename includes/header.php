@@ -1,3 +1,7 @@
+<?php
+  include('conn_db.php');
+  include ('Autenticacion/SeguridadUsuario.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,7 +19,13 @@
         <a class="navbar-brand" href="rango_parametros.php">Rango de parametros</a>
         <a class="navbar-brand" href="parametros.php">Parámetros</a>
         <a class="navbar-brand" href="alertas.php">Alertas</a>
-        <a class="navbar-brand" href="Autenticacion/cerrar_sesion.php">Cerrar Sesión</a>
+        <div class="text-end">
+          <a class="navbar-brand fw-bold text-dark"><?php echo $_SESSION['nombres']; ?></a>
+          <a href="Autenticacion/cerrar_sesion.php" class="btn btn-outline-danger">
+            <i class='bi bi-power'></i>
+          </a>
+        </div>
       </div>
+      
     </nav>
-    
+    <?php if(isset($_SESSION['id'])) {$id_usuario = $_SESSION['id']; }?>
